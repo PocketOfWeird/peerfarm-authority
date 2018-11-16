@@ -13,15 +13,14 @@ let knownhosts = [
 app.use(helmet());
 
 app.get('/knownhosts', (req, res) => {
-  console.log('node connecting')
   let token = req.headers['x-access-token'];
-  console.log('token', token);
   try {
     let host = jwt.verify(token, process.env.JWT_SECRET);
-    knownhosts = knownhosts.filter(h => h.ip !== host.ip) // avoid duplicates
-    knownhosts.push(host)
+    let knownhostsWithoutThisHost = knownhosts.filter(h => h.ip !== host.ip);
+    knownhosts = [...knownhostsWithoutThisHost];
+    knownhosts.push(host);
     console.log('knownhosts:', knownhosts);
-    res.send({ data: knownhosts });
+    res.send({ data: knownhostsWithoutThisHost });
   } catch (e) {
     res.status(401).send({ status: 401, message: 'Invalid Access Token'});
   }
