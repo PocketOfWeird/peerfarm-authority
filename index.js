@@ -30,7 +30,7 @@ app.get('/knownhosts', (req, res) => {
   }
 });
 
-app.post('/actionfrompeer', (req, res) => {
+app.post('/actionfrompeer', bodyParser.json(), (req, res) => {
     let token = req.headers['x-access-token'];
     try {
       jwt.verify(token, process.env.JWT_SECRET);
