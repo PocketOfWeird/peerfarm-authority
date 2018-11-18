@@ -19,10 +19,13 @@ app.get('/knownhosts', (req, res) => {
     let host = jwt.verify(token, process.env.JWT_SECRET);
     manager.dispatch(actions.setKnownHosts(host));
     let filteredState = { ...manager.getState() };
+    console.log(filteredState);
     let filteredHosts = filteredState.known_hosts.filter(h => h.ip !== host.ip);
+    console.log(filteredHosts);
     filteredState.known_hosts = filteredHosts;
     res.send({ data: filteredState });
   } catch (e) {
+    console.error(e);
     res.status(401).send({ status: 401, message: 'Invalid Access Token'});
   }
 });
