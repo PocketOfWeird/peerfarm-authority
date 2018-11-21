@@ -20,7 +20,7 @@ app.get('/knownhosts', (req, res) => {
     manager.dispatch(actions.setKnownHosts(host));
     let filteredState = { ...manager.getState() };
     console.log(filteredState);
-    let filteredHosts = filteredState.known_hosts.filter(h => h.ip !== host.ip);
+    let filteredHosts = filteredState.known_hosts.filter(h => h.id !== host.id);
     console.log(filteredHosts);
     filteredState.known_hosts = filteredHosts;
     res.send({ data: filteredState });
